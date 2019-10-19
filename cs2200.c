@@ -1,5 +1,6 @@
 #include <sdk/config.h>
 #include <string.h>
+#include "i2c.h"
 #include "cs2200.h"
 
 //#define TEST_I2C
