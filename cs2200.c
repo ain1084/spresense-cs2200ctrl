@@ -300,7 +300,7 @@ int cs2200_read_function_configuration1(int fd, uint8_t deviceAddr, enum CS2200_
     return OK;
 }
 
-int cs2200_write_function_configuration2(int fd, uint8_t deviceAddr, enum CS2200_PLL_CLOCK_OUTPUT_ON_UNLOCK pllClockOutputOnUnlock)
+int cs2200_write_function_configuration2(int fd, uint8_t deviceAddr, enum CS2200_PLL_CLK_OUTPUT_ON_UNLOCK pllClockOutputOnUnlock)
 {
     union CS2200_REG_FUNCTION_CONFIGURATION2_FIELD field;
     field.reserved1 = 0;
@@ -309,7 +309,7 @@ int cs2200_write_function_configuration2(int fd, uint8_t deviceAddr, enum CS2200
     return cs2200_write_register(fd, deviceAddr, CS2200_REG_FUNCTION_CONFIGURATION2, &field.Value, sizeof(field.Value));
 }
 
-int cs2200_read_function_configuration2(int fd, uint8_t deviceAddr, enum CS2200_PLL_CLOCK_OUTPUT_ON_UNLOCK *pPllClockOutputOnUnlock)
+int cs2200_read_function_configuration2(int fd, uint8_t deviceAddr, enum CS2200_PLL_CLK_OUTPUT_ON_UNLOCK *pPllClockOutputOnUnlock)
 {
     union CS2200_REG_FUNCTION_CONFIGURATION2_FIELD field;
     int r = cs2200_read_register(fd, deviceAddr, CS2200_REG_FUNCTION_CONFIGURATION2, &field.Value, sizeof(field.Value));
@@ -317,6 +317,6 @@ int cs2200_read_function_configuration2(int fd, uint8_t deviceAddr, enum CS2200_
     {
         return r;
     }
-    *pPllClockOutputOnUnlock = (enum CS2200_PLL_CLOCK_OUTPUT_ON_UNLOCK)field.ClkOutUnl;
+    *pPllClockOutputOnUnlock = (enum CS2200_PLL_CLK_OUTPUT_ON_UNLOCK)field.ClkOutUnl;
     return OK;
 }

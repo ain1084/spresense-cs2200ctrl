@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "cs2200.h"
+#include "cs2200_register_common.h"
+#include "cs2200_register_command.h"
 #include "cs2200_register_device_control.h"
 
 // readonly
@@ -44,35 +45,29 @@ static int readDeviceControl(int fd, uint8_t slaveId)
     {
         return r;
     }
-    printFieldValueExplanationWithDescription(isPllUnlocked ? 1 : 0, &pllUnlockedField);
-    printFieldValueExplanationWithDescription(isAuxOutDisabled ? 1 : 0, &auxOutDisabledField);
-    printFieldValueExplanationWithDescription(isPllClockOutputDisabled ? 1 : 0, &pllClockOutputDisabledField);
+    printFieldExplanationWithDescription(isPllUnlocked ? 1 : 0, &pllUnlockedField);
+    printFieldExplanationWithDescription(isAuxOutDisabled ? 1 : 0, &auxOutDisabledField);
+    printFieldExplanationWithDescription(isPllClockOutputDisabled ? 1 : 0, &pllClockOutputDisabledField);
     return OK;
 }
 
 static int writeDeviceControl(int fd, uint8_t slaveId, char *args[], int argn, int argc)
 {
-    bool isPllUnlocked;
-    bool isAuxOutDisabled;
-    bool isPllClockOutputDisabled;
-    int r = cs2200_read_device_control(fd, slaveId, &isPllUnlocked, &isAuxOutDisabled, &isPllClockOutputDisabled);
-    if (r != OK)
-    {
-        return r;
-    }
+    bool isAuxOutDisabled = false;
+    bool isPllClockOutputDisabled = false;
     for (; argn < argc; ++argn)
     {
         const char *arg = args[argn];
-        const struct CS2200_REGISTER_FIELD_VALUE* pFieldValue = findFieldValueObjectFromArgument(arg, &auxOutDisabledField);
+        const struct CS2200_REGISTER_FIELD_VALUE* pFieldValue = findFieldValueFromArgument(arg, &auxOutDisabledField);
         if (pFieldValue != NULL)
         {
-            isAuxOutDisabled = pFieldValue->object != 0;
+            isAuxOutDisabled = pFieldValue->value != 0;
             continue;
         }
-        pFieldValue = findFieldValueObjectFromArgument(arg, &pllClockOutputDisabledField);
+        pFieldValue = findFieldValueFromArgument(arg, &pllClockOutputDisabledField);
         if (pFieldValue != NULL)
         {
-            isPllClockOutputDisabled = pFieldValue->object != 0;
+            isPllClockOutputDisabled = pFieldValue->value != 0;
             continue;
         }
         fprintf(stderr, "Unknown argument: %s\n", arg);

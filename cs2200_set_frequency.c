@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "cs2200.h"
+#include "cs2200_register_common.h"
+#include "cs2200_register_command.h"
 #include "cs2200_set_frequency.h"
 
 static int writeFrequency(int fd, uint8_t slaveId, char* args[], int argn, int argc)
@@ -23,18 +24,10 @@ static int writeFrequency(int fd, uint8_t slaveId, char* args[], int argn, int a
     return cs2200_write_ratio(fd, slaveId, ratio);
 }
 
-static const struct CS2200_REGISTER_FIELD ratioField = {
-    "Frequency",
-    {
-        {"<32bit value>", 0, "Input Frequency (0 - 4294967295)Hz"},
-        {"<32bit value>", 0, "Output Frequency (1 - 4294967295)Hz"},
-        {NULL, 0, NULL}
-    }
-};
-
 static void help(void)
 {
-    showCommonHelp(&cs2200_set_frequency);    
+    fprintf(stderr, "%s\n", cs2200_set_frequency.pDescription);
+    fputs("\t<Input frequency Hz> <Output frequency Hz>\n", stderr);
 }
 
 const struct CS2200_REGISTER_COMMAND cs2200_set_frequency = {
@@ -43,6 +36,6 @@ const struct CS2200_REGISTER_COMMAND cs2200_set_frequency = {
     NULL,
     writeFrequency,
     help,
-    { &ratioField, NULL }
+    { NULL }
 };
 
