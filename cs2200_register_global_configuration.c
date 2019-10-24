@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "cs2200.h"
 #include "cs2200_register_common.h"
 #include "cs2200_register_global_configuration.h"
@@ -33,34 +32,28 @@ static int readGlobalConfiguration(int fd, uint8_t slaveId)
     {
         return r;
     }
-    printFieldValueExplanationWithDescription(isFreeze ? 1 : 0, &freezeField);
-    printFieldValueExplanationWithDescription(isEnabledDeviceConfiguration2 ? 1 : 0, &enabledDeviceConfiguration2Field);
+    printFieldExplanationWithDescription(isFreeze ? 1 : 0, &freezeField);
+    printFieldExplanationWithDescription(isEnabledDeviceConfiguration2 ? 1 : 0, &enabledDeviceConfiguration2Field);
     return OK;
 }
 
 static int writeGlobalConfiguration(int fd, uint8_t slaveId, char *args[], int argn, int argc)
 {
-    bool isFreeze;
-    bool isEnabledDeviceConfiguration2;
-    int r = cs2200_read_global_configuration(fd, slaveId, &isFreeze, &isEnabledDeviceConfiguration2);
-    if (r != OK)
-    {
-        return r;
-    }
-
+    bool isFreeze = false;
+    bool isEnabledDeviceConfiguration2 = false;
     for (; argn < argc; ++argn)
     {
         const char* arg = args[argn];
-        const struct CS2200_REGISTER_FIELD_VALUE* pFieldValue = findFieldValueObjectFromArgument(arg, &freezeField);
+        const struct CS2200_REGISTER_FIELD_VALUE* pFieldValue = findFieldValueFromArgument(arg, &freezeField);
         if (pFieldValue != NULL)
         {
-            isFreeze = pFieldValue->object != 0;
+            isFreeze = pFieldValue->value != 0;
             continue;
         }
-        pFieldValue = findFieldValueObjectFromArgument(arg, &enabledDeviceConfiguration2Field);
+        pFieldValue = findFieldValueFromArgument(arg, &enabledDeviceConfiguration2Field);
         if (pFieldValue != NULL)
         {
-            isEnabledDeviceConfiguration2 = pFieldValue->object != 0;
+            isEnabledDeviceConfiguration2 = pFieldValue->value != 0;
             continue;
         }
         fprintf(stderr, "Unknown argument: %s\n", arg);

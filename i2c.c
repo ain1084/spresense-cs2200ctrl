@@ -20,7 +20,7 @@ int i2c_open(int deviceNumber)
 
     char devPath[32];
     sprintf(devPath, "/dev/i2c%d", deviceNumber);
-    return open(devPath, O_RDONLY);
+    return open(devPath, O_RDONLY | O_SYNC);
 }
 
 int i2c_write_data(int fd, uint8_t deviceAddr, uint8_t* pData, ssize_t length)

@@ -1,12 +1,12 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "cs2200.h"
 #include "cs2200_register_common.h"
+#include "cs2200_register_command.h"
 #include "cs2200_register_device_id.h"
 
 // readonly
 static const struct CS2200_REGISTER_FIELD deviceIdField = {
-    "Device Identification (Device)",
+    "Device Identification (Device[4:0])",
     {
         {NULL, (int)DEVICE_ID_CS2200, "CS2200"},
         {NULL, 0, NULL}
@@ -15,10 +15,10 @@ static const struct CS2200_REGISTER_FIELD deviceIdField = {
 
 // readonly
 static const struct CS2200_REGISTER_FIELD revisionField = {
-    "Device Revision (Revision)",
+    "Device Revision (Revision[2:0])",
     {
-        {NULL, (int)CS2200_REVISION_B2_B3, "B2 and B3"},
-        {NULL, (int)CS2200_REVISION_C1, "C1"},
+        {NULL, (int)REVISION_B2_B3, "B2 and B3"},
+        {NULL, (int)REVISION_C1, "C1"},
         {NULL, 0, NULL}
     }
 };
@@ -32,8 +32,8 @@ static int readDeviceId(int fd, uint8_t slaveId)
     {
         return r;
     }
-    printFieldValueExplanationWithDescription(deviceId, &deviceIdField);
-    printFieldValueExplanationWithDescription(revision, &revisionField);
+    printFieldExplanationWithDescription(deviceId, &deviceIdField);
+    printFieldExplanationWithDescription(revision, &revisionField);
     return OK;
 }
 

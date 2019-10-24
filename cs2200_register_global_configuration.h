@@ -1,5 +1,6 @@
 #pragma once
-#include "cs2200_register_common.h"
+
+struct CS2200_REGISTER_COMMAND;
 
 extern const struct CS2200_REGISTER_COMMAND cs2200_register_global_configuration;
 
