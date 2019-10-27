@@ -82,7 +82,7 @@ int executeCommand(enum Operation operation, const struct CS2200_REGISTER_COMMAN
     {
         r = pCommand->pfnWrite(fd, slaveId, argv, argn, argc);
     }
-    else if (canReadCommand(pCommand))
+    else
     {
         r = pCommand->pfnRead(fd, slaveId);
     }
