@@ -1,11 +1,11 @@
 # spresense-cs2200ctrl
 
-# CIRRUS LOGIC CS2200CP controller for SPRESENSE
+# Cirrus Logic CS2200CP controller for SPRESENSE
 
 
 
 
-This program controls CS2200CP connected by I2C bus from Spresense. All CS2200CP registers can be displayed and written.
+This program controls [CS2200CP](https://www.cirrus.com/products/cs2200/) connected by I2C bus from Spresense. All CS2200CP registers can be displayed and written.
 
 Usage
 
